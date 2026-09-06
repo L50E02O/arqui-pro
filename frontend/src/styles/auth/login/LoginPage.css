@@ -1,0 +1,161 @@
+/* Wrapper para centrar horizontalmente todo el contenido */
+.lp-login-page-center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Botón para regresar al home */
+.lp-back-to-home-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.lp-back-to-home-button:hover {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(-2px);
+}
+
+.lp-back-to-home-button:active {
+    transform: translateX(0);
+}
+/* Estilos generales para toda la página de login */
+ .lp-login-page-container {
+    display: flex;
+    /* Asegura que el contenedor ocupe toda la altura de la ventana */
+    /* min-height: 100vh;  */
+    width: 100%;
+    max-width: 900px;
+    box-sizing: border-box;
+    margin: 0;
+    /* Fondo general sutil, similar al que rodea la tarjeta en la imagen */
+    background-color: #f7f7f7; 
+}
+
+/* --- Lado Izquierdo (Imagen) --- */
+
+ .lp-image-side {
+    /* Ocupa la mayor parte del espacio (e.g., 60% del ancho) */
+    flex: 1;
+    background-color: #ffffff; /* Fondo blanco */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); /* Sombra suave a la derecha */
+}
+
+ .lp-login-illustration {
+    /* Aquí defines la dimensión deseada, por ejemplo: */
+    width: 400px; 
+    height: 400px;
+    
+    display: block;
+    /* Cómo se ajusta la imagen a las dimensiones (400x400): */
+    object-fit: contain; 
+    /* Si usas 'contain', la imagen se ajustará para no recortarse. 
+       Si usas 'cover', la imagen llenará el espacio, pero se recortará. */
+    border-radius: 4px; 
+    margin-bottom: 20px; /* Separación opcional si tuviera textos debajo */
+}
+
+ .lp-image-side-title {
+    font-size: 2.5rem;
+    color: #f48c06; /* Naranja */
+    margin-bottom: 10px;
+}
+
+ .lp-image-side-text {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+
+/* --- Lado Derecho (Formulario) --- */
+
+ .lp-form-side {
+    /* Ocupa menos espacio (e.g., 40% del ancho) */
+    flex: 1; 
+    display: flex;
+    /* justify-content: left;
+    align-items: center; */
+    background-color: #f7f7f7; /* Mantiene el fondo sutil */
+}
+
+/* Nota importante: 
+   El componente FormularioLogin debe tener su propia clase padre 
+   (.login-card) definida en 'formularioLogin.css', 
+   que le da el fondo blanco y la sombra de la imagen original. 
+   Asegúrate de que los estilos en 'formularioLogin.css' estén activos.
+*/
+
+/* --- Estilos para mensajes (opcional) --- */
+ .lp-login-loading-message, .lp-login-error-message {
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+ .lp-login-error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* --- Media Query para dispositivos pequeños (opcional) --- */
+
+@media (max-width: 992px) {
+    .lp-login-page-container {
+        /* Pasa a ser una columna en pantallas pequeñas */
+        flex-direction: column; 
+        padding: 0px 20px;
+    }
+    
+    .lp-image-side {
+        /* Ocupa menos espacio para no dominar la vista */
+        flex: unset;
+        padding: 40px 20px;
+        min-height: 200px;
+        box-shadow: none;
+    }
+    
+    .lp-form-side {
+        flex: unset; 
+        width: 100%;
+    }
+    
+    /* Permite que el FormularioLogin se ajuste mejor al ancho */
+    .login-card {
+        padding: 40px 20px;
+        width: 100%;
+        max-width: 100%;
+    }
+    .lp-login-illustration {
+    /* Aquí defines la dimensión deseada, por ejemplo: */
+    width: 350px; 
+    height: 150px;
+    object-fit: cover; 
+    }
+}

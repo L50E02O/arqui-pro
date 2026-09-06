@@ -1,0 +1,261 @@
+.rating-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.rating-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 700px;
+  width: 100%;
+  padding: 3rem;
+}
+
+.rating-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.rating-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.subtitle {
+  margin: 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+.rating-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.rating-section {
+  text-align: center;
+}
+
+.rating-label {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.stars-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.star-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: transform 0.2s;
+}
+
+.star-button:hover {
+  transform: scale(1.1);
+}
+
+.star-button:active {
+  transform: scale(0.95);
+}
+
+.star-icon {
+  transition: all 0.2s;
+}
+
+.star-icon.filled {
+  color: #ffc107;
+}
+
+.star-icon.empty {
+  color: #ddd;
+}
+
+.rating-text {
+  margin: 0.5rem 0 0 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #ff6b35;
+}
+
+.feedback-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.feedback-label {
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.feedback-textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.feedback-textarea:focus {
+  outline: none;
+  border-color: #ff6b35;
+}
+
+.additional-ratings {
+  border-top: 1px solid #e9ecef;
+  padding-top: 2rem;
+}
+
+.additional-title {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.rating-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.category-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.category-stars {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.category-star-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: transform 0.2s;
+}
+
+.category-star-button:hover {
+  transform: scale(1.1);
+}
+
+.category-star {
+  transition: all 0.2s;
+}
+
+.category-star-button:hover .category-star {
+  fill: #ffc107;
+  stroke: #ffc107;
+}
+
+.submit-section {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.submit-button {
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 180px;
+}
+
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+}
+
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  padding: 1rem 2.5rem;
+  background: white;
+  color: #666;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 180px;
+}
+
+.cancel-button:hover {
+  background: #f8f9fa;
+  border-color: #ddd;
+}
+
+@media (max-width: 768px) {
+  .rating-page {
+    padding: 1rem;
+  }
+
+  .rating-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .rating-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .stars-container {
+    gap: 0.25rem;
+  }
+
+  .star-button .star-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .submit-section {
+    flex-direction: column;
+  }
+
+  .submit-button,
+  .cancel-button {
+    width: 100%;
+  }
+}
+

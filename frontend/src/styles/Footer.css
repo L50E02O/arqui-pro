@@ -1,0 +1,31 @@
+/* Footer Styles */
+.footer {
+  background-color: #f8fafc;
+  padding: 2rem 0;
+  margin-top: 4rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #2c3e50;
+}
+
+.footer-text {
+  color: #64748b;
+  font-size: 0.9rem;
+}

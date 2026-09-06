@@ -1,0 +1,188 @@
+/* Arquitecto Card Styles */
+.arquitecto-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.arquitecto-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.arquitecto-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.arquitecto-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-initials {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+}
+
+.arquitecto-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 0.5rem;
+}
+
+.arquitecto-specialty {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.arquitecto-description {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  min-height: 2.4em;
+}
+
+.arquitecto-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.rating-star {
+  font-size: 1.25rem;
+}
+
+.rating-value {
+  font-weight: 600;
+  color: #1a202c;
+  font-size: 0.95rem;
+}
+
+.arquitecto-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #ff6b35;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.arquitecto-button:hover {
+  background-color: #e55a24;
+  transform: translateY(-2px);
+}
+
+.arquitecto-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .arquitecto-card {
+    padding: 1rem;
+  }
+  
+  .arquitecto-avatar {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .avatar-initials {
+    font-size: 1.5rem;
+  }
+}
+
+/* Simple Card Styles */
+.arquitecto-card-simple {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.5rem;
+}
+
+.arquitecto-card-simple .arquitecto-avatar {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 1.5rem;
+}
+
+.arquitecto-card-simple .avatar-initials {
+  font-size: 2.5rem;
+}
+
+.arquitecto-card-simple .arquitecto-info {
+  width: 100%;
+  text-align: center;
+}
+
+.arquitecto-card-simple .arquitecto-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.arquitecto-card-simple .arquitecto-specialty {
+  font-size: 1rem;
+  color: #ff8c42;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.arquitecto-card-simple .arquitecto-rating {
+  background: linear-gradient(135deg, #fff5ec 0%, #ffe8d6 100%);
+  padding: 0.8rem 1.2rem;
+  border-radius: 50px;
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.arquitecto-card-simple .rating-star {
+  font-size: 1.4rem;
+}
+
+.arquitecto-card-simple .rating-value {
+  font-size: 1.1rem;
+  color: #ff8c42;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .arquitecto-card-simple .arquitecto-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .arquitecto-card-simple .avatar-initials {
+    font-size: 2rem;
+  }
+}

@@ -1,0 +1,229 @@
+/* Estilos generales del contenedor y fondo */
+body {
+    background-color: #f7f7f7;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* --- Tarjeta del Formulario (Login Card) --- */
+
+.flc-login-card {
+    background-color: #ffffff;
+    padding: 60px 80px;
+    /* border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); */
+    max-width: 440px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* --- Sección de Logo --- */
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.flc-logo-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.flc-logo-color-box {
+    width: 16px;
+    height: 16px;
+    background-color: #f48c06;
+    border-radius: 2px;
+}
+
+.flc-logo-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* --- Títulos y Subtítulos --- */
+.flc-welcome-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 8px 0;
+}
+
+.flc-subtitle {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 30px;
+}
+
+/* --- Formulario y Grupos de Entrada --- */
+.flc-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.flc-input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.flc-input-label {
+    font-size: 14px;
+    color: #495057;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+/* Contenedor relativo para posicionar los íconos */
+.flc-input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.flc-form-input {
+    width: 100%;
+    /* Aumentamos el padding-left para dejar espacio al icono y al texto del placeholder */
+    padding: 12px 15px 12px 56px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.flc-form-input::placeholder {
+    color: #adb5bd;
+}
+
+.flc-form-input:focus {
+    border-color: #f48c06;
+    outline: none;
+}
+
+/* Clase para los íconos que van al final del input (User) */
+.flc-input-end-icon {
+    position: absolute;
+    right: 15px;
+    color: #adb5bd;
+    /* Asegura que el ícono no bloquee clics accidentales si no es interactivo */
+    pointer-events: none; 
+}
+
+.flc-input-start-icon {
+    position: absolute;
+    left: 18px; /* Ligeramente separado del borde para alinear con el padding del input */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3; /* Mantener por encima visualmente sin tapar el texto (el padding empuja el texto) */
+    color: #adb5bd;
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+
+
+/* Estilos específicos para el campo de Contraseña */
+.password-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.flc-password-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.flc-forgot-password-link {
+    font-size: 14px;
+    color: #f48c06;
+    text-decoration: none;
+    font-weight: 500;
+}
+.flc-forgot-password-link:hover {
+    text-decoration: underline;
+}
+.flc-password-toggle-icon {
+    position: absolute;
+    right: 15px;
+    color: #adb5bd;
+    cursor: pointer; /* Indica que es interactivo */
+}
+
+.forgot-password-link {
+    font-size: 14px;
+    color: #f48c06;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Clase para el ícono de Ojo (interactivo) */
+.password-toggle-icon {
+    position: absolute;
+    right: 15px;
+    color: #adb5bd;
+    cursor: pointer; /* Indica que es interactivo */
+}
+
+/* --- Botón de Login --- */
+.flc-login-button {
+    background-color: #f48c06;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #e67e22;
+}
+
+/* --- Sección de Sign Up (Parte inferior) --- */
+.flc-signup-text {
+    text-align: center;
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 25px;
+}
+.flc-signup-link {
+    color: #f48c06;
+    text-decoration: none;
+    font-weight: bold;
+}
+.flc-signup-link:hover {
+    text-decoration: underline;
+}
+
+.signup-link {
+    color: #f48c06;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-link:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,258 @@
+/* Verificaciones Page */
+.verificaciones-page {
+  width: 100%;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #212529;
+  margin: 0 0 32px 0;
+}
+
+/* Table Container */
+.table-container {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+/* Table */
+.verificaciones-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.verificaciones-table thead {
+  background-color: #f8f9fa;
+}
+
+.verificaciones-table th {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.verificaciones-table tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+}
+
+.verificaciones-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.verificaciones-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.verificaciones-table td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: #212529;
+}
+
+/* Badges */
+.ver-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ver-badge-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.ver-badge-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.ver-badge-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.ver-badge-secondary {
+  background-color: #e9ecef;
+  color: #6c757d;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-aprobar,
+.btn-rechazar,
+.btn-ver {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-aprobar {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn-aprobar:hover {
+  background-color: #218838;
+}
+
+.btn-rechazar {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-rechazar:hover {
+  background-color: #c82333;
+}
+
+.btn-ver {
+  background-color: #ff6b35;
+  color: #fff;
+}
+
+.btn-ver:hover {
+  background-color: #e55a2b;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  border: 1px solid #e9ecef;
+  background: #fff;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #212529;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* Loading */
+.verificaciones-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  font-size: 16px;
+  color: #6c757d;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .verificaciones-table {
+    font-size: 13px;
+  }
+
+  .verificaciones-table th,
+  .verificaciones-table td {
+    padding: 12px 16px;
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .verificaciones-table {
+    min-width: 800px;
+  }
+
+  .verificaciones-table th,
+  .verificaciones-table td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .btn-aprobar,
+  .btn-rechazar,
+  .btn-ver {
+    padding: 5px 12px;
+    font-size: 12px;
+    width: 100%;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .pagination-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 20px;
+  }
+
+  .verificaciones-table th {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+
+  .verificaciones-table td {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+}

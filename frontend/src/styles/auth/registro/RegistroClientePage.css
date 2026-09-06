@@ -1,0 +1,31 @@
+/* Estilos de la página de registro de cliente (prefijo .rcp-)
+   Centra el formulario dentro de la página */
+
+.rcp-registro-page-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    background-color: transparent;
+}
+
+.rcp-form-side {
+    width: 100%;
+    max-width: 820px; /* permite que el formulario tenga espacio y quede centrado */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0 16px;
+}
+
+@media (max-width: 600px) {
+    .rcp-registro-page-container {
+        padding: 20px 12px;
+    }
+    .rcp-form-side {
+        padding: 0 8px;
+    }
+}

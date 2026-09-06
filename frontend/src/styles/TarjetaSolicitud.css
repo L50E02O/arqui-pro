@@ -1,0 +1,78 @@
+.tarjeta-solicitud {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 12px;
+}
+
+.tarjeta-solicitud:hover {
+  border-color: #ff6b35;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.1);
+}
+
+.tarjeta-solicitud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.tarjeta-solicitud-titulo {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.tarjeta-solicitud-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.estado-activo {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.estado-pendiente {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.estado-cerrado {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.tarjeta-solicitud-estado {
+  margin: 8px 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.tarjeta-solicitud-estado strong {
+  color: #1f2937;
+}
+
+.tarjeta-solicitud-info {
+  margin: 8px 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.tarjeta-solicitud-tiempo {
+  margin: 8px 0 0 0;
+  font-size: 0.8125rem;
+  color: #9ca3af;
+}

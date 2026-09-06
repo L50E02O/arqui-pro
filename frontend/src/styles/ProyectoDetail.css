@@ -1,0 +1,230 @@
+/* Proyecto Detail Page Styles */
+
+.proyecto-detail-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+  padding: 2rem 1rem;
+}
+
+.proyecto-detail-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header Section */
+.proyecto-header {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.proyecto-header-main {
+  margin-bottom: 0.75rem;
+}
+
+.proyecto-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.15;
+}
+
+.proyecto-description {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Info Grid */
+.proyecto-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1.5rem;
+  padding-top: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.info-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.info-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.info-label {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  color: #1a202c;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Rating Section */
+.proyecto-rating-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: linear-gradient(135deg, #fff5ec 0%, #ffe8d6 100%);
+  border-radius: 10px;
+  border: 1px solid #ffd4b8;
+}
+
+.rating-label {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.rating-display {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rating-star {
+  color: #ff6b35;
+}
+
+.rating-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ff6b35;
+}
+
+.rating-reviews {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Tabs Section */
+.proyecto-tabs {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  background: transparent;
+  padding: 0 0 0.25rem 0;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #e6e9ee;
+}
+
+.tab-button {
+  padding: 0.45rem 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.15s ease, border-bottom-color 0.15s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-button:hover {
+  color: #1a202c;
+}
+
+.tab-button.active {
+  color: #ff6b35;
+  border-bottom-color: #ff6b35;
+}
+
+/* Tab Content */
+.tab-content {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  min-height: 400px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .proyecto-detail-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .proyecto-header {
+    padding: 1.5rem;
+  }
+
+  .proyecto-title {
+    font-size: 2rem;
+  }
+
+  .proyecto-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proyecto-tabs {
+    flex-direction: column;
+  }
+
+  .tab-button {
+    padding: 0.875rem 1rem;
+  }
+
+  .tab-content {
+    padding: 1.5rem;
+  }
+
+  .rating-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .proyecto-title {
+    font-size: 1.75rem;
+  }
+
+  .proyecto-description {
+    font-size: 1rem;
+  }
+
+  .proyecto-rating-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

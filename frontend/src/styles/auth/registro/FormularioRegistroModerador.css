@@ -1,0 +1,205 @@
+/* Contenedor principal del formulario */
+.frm-register-card {
+    max-width: 650px; /* Reducimos el ancho para que se vea más centrado */
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    color: #343a40;
+    font-family: 'Inter', sans-serif;
+}
+
+/* -------------------------------------------------------------------- */
+/* --- Títulos --- */
+/* -------------------------------------------------------------------- */
+
+.frm-logo-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.frm-logo-color-box {
+    width: 20px;
+    height: 20px;
+    background-color: #007bff; /* Usamos un color diferente para el moderador (azul) */
+    margin-right: 8px;
+    border-radius: 4px;
+}
+
+.frm-logo-text {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #343a40;
+}
+
+.frm-welcome-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #343a40;
+    margin-bottom: 8px;
+}
+
+.frm-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 25px;
+}
+
+/* -------------------------------------------------------------------- */
+/* --- Formulario y Layout (Grid) --- */
+/* -------------------------------------------------------------------- */
+
+.frm-register-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 columnas principales */
+    gap: 20px; /* Espacio entre filas y columnas */
+}
+
+/* Para que el correo, la contraseña y el botón ocupen las 2 columnas */
+.frm-full-span {
+    grid-column: 1 / -1; 
+}
+
+.frm-validation-error {
+    padding: 12px;
+    background-color: #fcebeb;
+    color: #dc3545;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    margin-bottom: 0; /* Ya tenemos gap en el grid */
+    font-weight: 500;
+    text-align: center;
+    grid-column: 1 / -1; /* Ocupa todo el ancho */
+}
+
+/* En pantallas pequeñas, todo a una columna */
+@media (max-width: 600px) {
+    .frm-register-card {
+        padding: 20px;
+    }
+    .frm-register-form {
+        grid-template-columns: 1fr; /* 1 columna */
+        gap: 15px;
+    }
+    .frm-full-span {
+        grid-column: auto; /* Deshabilitamos el span completo en móvil */
+    }
+}
+
+/* -------------------------------------------------------------------- */
+/* --- Elementos de Input --- */
+/* -------------------------------------------------------------------- */
+
+.frm-input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.frm-input-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 6px;
+}
+
+.frm-input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.frm-input-start-icon {
+    position: absolute;
+    left: 12px;
+    color: #adb5bd;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.frm-form-input {
+    width: 100%;
+    padding: 12px 12px 12px 40px; /* Padding extra a la izquierda para el ícono */
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #f8f9fa;
+}
+
+.frm-form-input:focus {
+    border-color: #007bff; /* Azul de moderador */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    background-color: #ffffff;
+}
+
+/* Estilo para inputs con error (correo ya existe) */
+.frm-input-error-state {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2) !important;
+}
+
+/* Toggle de Contraseña */
+.frm-password-toggle-icon {
+    position: absolute;
+    right: 12px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #adb5bd;
+    transition: color 0.2s;
+    z-index: 3;
+}
+
+.frm-password-toggle-icon:hover {
+    color: #495057;
+}
+
+/* -------------------------------------------------------------------- */
+/* --- Botones y Links --- */
+/* -------------------------------------------------------------------- */
+
+.frm-register-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff; /* Azul principal */
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+    grid-column: 1 / -1; /* Ocupa todo el ancho */
+    margin-top: 10px; /* Espacio extra sobre el botón */
+}
+
+.frm-register-button:hover {
+    background-color: #0056b3;
+}
+
+.frm-register-button:active {
+    transform: scale(0.99);
+}
+
+.frm-login-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #6c757d;
+    grid-column: 1 / -1; /* Ocupa todo el ancho */
+}
+
+.frm-login-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.frm-login-link:hover {
+    text-decoration: underline;
+}

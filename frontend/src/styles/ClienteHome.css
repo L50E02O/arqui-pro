@@ -1,0 +1,251 @@
+.cliente-home {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.cliente-home-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+}
+
+.ch-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #f3f4f6;
+  border-top-color: #ff6b35;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* HEADER */
+.cliente-home-header {
+  margin-bottom: 32px;
+}
+
+.cliente-home-titulo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.nombre-usuario {
+  color: #ff6b35;
+}
+
+/* GRID LAYOUT */
+.cliente-home-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+}
+
+.cliente-home-main {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.cliente-home-sidebar {
+  position: sticky;
+  top: 100px;
+  align-self: start;
+}
+
+/* SECCIONES */
+.seccion-titulo {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 20px 0;
+}
+
+/* ARQUITECTOS */
+.seccion-arquitectos {
+  background: transparent;
+}
+
+.arquitectos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* PROYECTOS */
+.seccion-proyectos {
+  background: transparent;
+}
+
+.proyectos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.sin-proyectos {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  border: 2px dashed #e5e7eb;
+}
+
+/* SOLICITUDES */
+.seccion-solicitudes {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.solicitudes-lista {
+  display: flex;
+  flex-direction: column;
+}
+
+.solicitudes-lista .tarjeta-solicitud:last-child {
+  margin-bottom: 0;
+}
+
+.sin-solicitudes {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* MENSAJES SIN DATOS */
+.sin-datos {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.95rem;
+  padding: 40px 20px;
+  grid-column: 1 / -1;
+}
+
+.sin-datos-mensaje {
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+}
+
+.sin-datos-ayuda {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* WebSocket Status Indicators */
+.ws-status {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.ws-status.ws-connected {
+  background-color: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+  animation: pulse-ws 2s infinite;
+}
+
+@keyframes pulse-ws {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.ws-indicator-small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%);
+  border-radius: 6px;
+  margin-top: 12px;
+  font-size: 0.8125rem;
+  color: #047857;
+}
+
+.ws-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #10b981;
+  animation: pulse-ws 2s infinite;
+}
+
+.ws-text {
+  font-weight: 500;
+}
+
+.seccion-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .cliente-home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cliente-home-sidebar {
+    position: static;
+  }
+
+  .arquitectos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .cliente-home-titulo {
+    font-size: 1.5rem;
+  }
+
+  .arquitectos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proyectos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cliente-home-header {
+    margin-bottom: 24px;
+  }
+
+  .cliente-home-grid {
+    gap: 24px;
+  }
+
+  .cliente-home-main {
+    gap: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .seccion-solicitudes {
+    padding: 16px;
+  }
+
+  .seccion-titulo {
+    font-size: 1.125rem;
+  }
+}

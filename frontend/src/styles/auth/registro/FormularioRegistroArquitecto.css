@@ -1,0 +1,395 @@
+/* -------------------------------------------------------------------- */
+/* --- 1. Contenedor Principal (Card) --- */
+/* -------------------------------------------------------------------- */
+
+.fra-register-card {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    /* font-family: 'Inter', sans-serif; */
+    color: #343a40;
+}
+
+/* -------------------------------------------------------------------- */
+/* --- 2. Logo y Títulos --- */
+/* -------------------------------------------------------------------- */
+
+.fra-logo-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.fra-logo-color-box {
+    width: 20px;
+    height: 20px;
+    background-color: #f7931e; /* Color naranja de ArquiPro */
+    margin-right: 8px;
+    border-radius: 4px;
+}
+
+.fra-logo-text {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #343a40;
+}
+
+.fra-welcome-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #343a40;
+    margin-bottom: 8px;
+}
+
+.fra-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 25px;
+}
+
+/* -------------------------------------------------------------------- */
+/* --- 3. Formulario y Errores --- */
+/* -------------------------------------------------------------------- */
+
+.fra-register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espacio entre filas */
+}
+
+.fra-validation-error {
+    padding: 12px;
+    background-color: #fcebeb;
+    color: #dc3545;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Fila de Inputs (Responsiva) */
+.fra-input-row {
+    display: grid;
+    /* 3 columnas en desktop, 1 en móvil */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+}
+
+/* Fila de Inputs para 2 columnas (Especialidades y Ubicación) */
+.fra-input-row-half {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* En pantallas pequeñas, todo a una columna */
+@media (max-width: 768px) {
+    .fra-register-card {
+        padding: 20px;
+        margin: 20px auto;
+    }
+    .fra-input-row, .fra-input-row-half {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+
+/* -------------------------------------------------------------------- */
+/* --- 4. Elementos de Input --- */
+/* -------------------------------------------------------------------- */
+
+.fra-input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.fra-input-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 6px;
+}
+
+.fra-input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.fra-input-start-icon {
+    position: absolute;
+    left: 12px;
+    color: #adb5bd;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.fra-form-input, .fra-form-textarea {
+    width: 100%;
+    padding: 10px 10px 10px 40px; /* Padding extra a la izquierda para el ícono */
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #ffffff;
+}
+
+.fra-form-input:focus, .fra-form-textarea:focus {
+    border-color: #f7931e;
+    box-shadow: 0 0 0 3px rgba(247, 147, 30, 0.25);
+    background-color: #ffffff;
+}
+
+/* Estilo para inputs con error (correo/cedula ya existentes) */
+.fra-input-error-state {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2) !important;
+}
+
+/* Toggle de Contraseña */
+.fra-password-toggle-icon {
+    position: absolute;
+    right: 12px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #adb5bd;
+    transition: color 0.2s;
+    z-index: 3;
+}
+
+.fra-password-toggle-icon:hover {
+    color: #495057;
+}
+
+/* -------------------------------------------------------------------- */
+/* --- 5. Text Area (Descripción) --- */
+/* -------------------------------------------------------------------- */
+
+.fra-textarea-group {
+    /* Ocupa todo el ancho en el grid si es necesario */
+    grid-column: 1 / -1; 
+}
+
+.fra-form-textarea {
+    min-height: 120px;
+    resize: vertical;
+    padding: 10px 10px 10px 40px; 
+}
+
+/* Ícono del TextArea */
+.fra-textarea-container .fra-input-start-icon {
+    align-self: flex-start;
+    top: 10px;
+}
+
+.fra-char-count {
+    align-self: flex-end;
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 4px;
+}
+
+
+/* -------------------------------------------------------------------- */
+/* --- 6. Botones y Links --- */
+/* -------------------------------------------------------------------- */
+
+.fra-register-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #f7931e; /* Naranja principal */
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    box-shadow: 0 4px 15px rgba(247, 147, 30, 0.4);
+}
+
+.fra-register-button:hover {
+    background-color: #e08316;
+}
+
+.fra-register-button:active {
+    transform: scale(0.99);
+}
+
+.fra-login-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+.fra-login-link {
+    color: #f7931e;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.fra-login-link:hover {
+    text-decoration: underline;
+}
+
+
+/* Botón de cambio de rol (Cliente) */
+.fra-client-register-container {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+/* .fra-client-register-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 25px;
+    background-color: #fef5ee; 
+    color: #f7931e;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid #f7931e20;
+    border-radius: 8px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.fra-client-register-button:hover {
+    background-color: #fae8d8;
+    box-shadow: 0 2px 10px rgba(247, 147, 30, 0.1);
+} */
+
+.fra-client-register-button {
+    width: 100%;
+    background-color: #fff3e6; /* Fondo color piel claro */
+    color: #f48c06; /* Texto naranja */
+    padding: 14px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.fra-client-register-button:hover {
+    background-color: #ffe0b2; /* Un poco más oscuro al pasar el ratón */
+}
+
+/* -------------------------------------------------------------------- */
+/* --- Estilos para Select Multiple (Especialidades) --- */
+/* -------------------------------------------------------------------- */
+
+.fra-especialidades-wrapper {
+    position: relative;
+    z-index: 10;
+}
+
+.fra-especialidades-button {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    background-color: #ffffff;
+    color: #343a40;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.fra-especialidades-button:hover {
+    border-color: #f7931e80;
+}
+
+.fra-especialidades-button:focus {
+    outline: none;
+    border-color: #f7931e;
+    box-shadow: 0 0 0 3px rgba(247, 147, 30, 0.15);
+}
+
+.fra-especialidades-button-text {
+    font-weight: 500;
+    text-align: left;
+}
+
+.fra-dropdown-arrow {
+    display: inline-block;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    color: #f7931e;
+}
+
+.fra-dropdown-arrow.open {
+    transform: rotate(180deg);
+}
+
+/* Dropdown flotante */
+.fra-especialidades-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 8px;
+    background-color: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-height: 280px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.fra-especialidad-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    user-select: none;
+}
+
+.fra-especialidad-item:last-child {
+    border-bottom: none;
+}
+
+.fra-especialidad-item:hover {
+    background-color: #fef5ee;
+}
+
+.fra-especialidad-item.selected {
+    background-color: #fff3e6;
+}
+
+.fra-especialidad-item input[type="checkbox"] {
+    margin-right: 10px;
+    cursor: pointer;
+    accent-color: #f7931e;
+    width: 18px;
+    height: 18px;
+}
+
+.fra-especialidad-item input[type="checkbox"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.fra-especialidad-name {
+    font-size: 15px;
+    color: #343a40;
+    flex: 1;
+}

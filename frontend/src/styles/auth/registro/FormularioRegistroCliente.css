@@ -1,0 +1,237 @@
+/* --- Estilos del Formulario de Registro de Clientes --- */
+
+/* 1. Contenedor Principal (Tarjeta) */
+.frcc-register-card {
+    /* El estilo global de body ya lo centra vertical y horizontalmente */
+    background-color: #ffffff; /* Fondo blanco requerido */
+    padding: 60px 50px;
+    max-width: 550px; /* Incrementado para hacerlo más ancho */
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left; /* Alinear todo el contenido a la izquierda (labels y texto) */
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* 2. Sección del Logo y Títulos */
+/* .logo-section { */
+.frcc-logo-section {
+    justify-content: center; /* Centrar el logo horizontalmente */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.frcc-logo-color-box {
+    width: 16px;
+    height: 16px;
+    background-color: #f48c06;
+    border-radius: 2px;
+}
+
+.frcc-logo-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.frcc-welcome-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.frcc-subtitle {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+/* 3. Contenedor del Formulario */
+.frcc-register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px; /* Espacio entre grupos de input */
+}
+
+/* 4. Layout de 2 Columnas (Nombre y Apellido) */
+.frcc-input-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.frcc-input-row .frcc-input-group {
+    flex: 1; /* Cada grupo ocupa la mitad del espacio */
+    min-width: 0; /* Necesario para que flex funcione correctamente */
+}
+
+/* Responsividad para Nombre y Apellido */
+@media (max-width: 600px) {
+    .frcc-input-row {
+        flex-direction: column; /* Apilar en pantallas pequeñas */
+        gap: 22px;
+    }
+}
+
+
+/* 5. Estilos Generales de Inputs y Labels */
+
+.frcc-input-label {
+    text-align: left; /* Alinear etiquetas a la izquierda */
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 6px;
+}
+
+.frcc-input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.frcc-form-input {
+    width: 100%;
+    /* Ajustamos padding para dar espacio al ícono inicial */
+    padding: 12px 15px 12px 45px; 
+    border: 1px solid #e9ecef; /* Borde más sutil que el original */
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #ffffff;
+}
+
+.frcc-form-input:focus {
+    border-color: #f48c06;
+    box-shadow: 0 0 0 3px rgba(244, 140, 6, 0.2); /* Sombra de enfoque sutil */
+    outline: none;
+}
+
+/* Íconos de inicio (User, Mail, Smartphone, etc.) */
+.frcc-input-start-icon {
+    position: absolute;
+    left: 15px;
+    z-index: 2; 
+    color: #adb5bd;
+}
+
+/* Ícono de alternar contraseña (Ojo) */
+.frcc-password-toggle-icon {
+    position: absolute;
+    right: 15px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #adb5bd;
+    display: flex; /* Centrar el ícono */
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    transition: color 0.2s;
+}
+
+.frcc-password-toggle-icon:hover {
+    color: #f48c06;
+}
+
+
+/* 6. Botón Primario (Create Account) */
+.frcc-register-button {
+    background-color: #f48c06; /* Naranja primario */
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s, transform 0.1s;
+    box-shadow: 0 4px 10px rgba(244, 140, 6, 0.4);
+}
+
+.frcc-register-button:hover {
+    background-color: #e67e22; /* Naranja un poco más oscuro */
+    box-shadow: 0 6px 12px rgba(244, 140, 6, 0.5);
+}
+
+.frcc-register-button:active {
+    transform: translateY(1px);
+}
+
+/* 7. Mensaje de Error de Validación */
+.frcc-validation-error {
+    background-color: #fcebeb; /* Fondo rojo claro */
+    color: #cc0000; /* Texto rojo oscuro */
+    border: 1px solid #cc0000;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: left;
+}
+
+
+/* 8. Sección de Log In (Ya tengo cuenta) */
+.frcc-signup-text {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center; /* Centrar solo este bloque dentro del formulario */
+}
+
+.frcc-signup-link {
+    color: #f48c06;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.frcc-signup-link:hover {
+    text-decoration: underline;
+}
+
+/* 9. Botón Secundario (Register as Architect) */
+.frcc-architect-register-container {
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef; /* Separador sutil */
+    margin-top: 20px;
+}
+
+.frcc-architect-register-button {
+    width: 100%;
+    background-color: #fff3e6; /* Fondo color piel claro */
+    color: #f48c06; /* Texto naranja */
+    padding: 14px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.frcc-architect-register-button:hover {
+    background-color: #ffe0b2; /* Un poco más oscuro al pasar el ratón */
+}
+
+/* --- Media Queries: Ajuste para móvil --- */
+@media (max-width: 500px) {
+    .frcc-register-card {
+        padding: 40px 25px;
+        box-shadow: none; /* Eliminar sombra en móviles para look full-width */
+        max-width: 100%;
+        border-radius: 0;
+    }
+    .frcc-welcome-title {
+        font-size: 26px;
+    }
+}
