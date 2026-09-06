@@ -1,0 +1,569 @@
+# Reglas de Cursor para Arqui-Pro
+# Proyecto de arquitectura multi-stack: Rails API REST, GraphQL (Python), WebSocket (NestJS), Frontend React
+
+##  CONTEXTO DEL PROYECTO
+
+Este es un proyecto multi-stack que incluye:
+- **Backend REST API**: Rails 8 con PostgreSQL, Devise + JWT
+- **Backend GraphQL**: FastAPI + Strawberry GraphQL (Python)
+- **Backend WebSocket**: NestJS con Socket.IO (TypeScript)
+- **Frontend**: React 19 + TypeScript + Vite + Apollo Client
+
+##  CONVENCIONES GENERALES
+
+### Idioma y Documentación
+- Evita readmes.md innecesarios
+- **Siempre responde en español** para comentarios, documentación y mensajes
+- Incluye comentarios de documentación claros (docstrings/comentarios) para todas las funciones y clases públicas
+- Explica propósito, argumentos y retorno en la documentación
+- Usa nombres descriptivos en español para variables de negocio, comentarios en inglés para código técnico
+- **NO uses emojis** en código generado, comentarios, documentación, mensajes de log, ni en ninguna parte del código fuente
+- Los emojis solo están permitidos en este archivo de reglas para organización visual, pero nunca en el código del proyecto
+
+### Manejo de Errores
+- Incluye manejo de errores robusto (try-catch, rescue, manejo de excepciones)
+- Registra errores con contexto suficiente para debugging
+- Retorna mensajes de error claros y útiles para el usuario final
+- Nunca expongas detalles internos de la aplicación en errores de producción
+
+### Completitud
+- El código generado debe estar completo y funcional
+- Incluye todas las importaciones y dependencias necesarias
+- No dejes marcadores de lugar (TODO, FIXME) a menos que sea explícitamente solicitado
+- Si no estás seguro de la mejor solución, presenta opciones con pros/contras
+
+### Testing
+- Incluye ejemplos de pruebas unitarias cuando sea relevante
+- Sigue los frameworks de testing del proyecto (Minitest para Rails, Jest para NestJS/React, pytest para Python)
+
+---
+
+##  RAILS API REST (Ruby)
+
+### Estructura y Organización
+- Sigue la arquitectura MVC de Rails estrictamente
+- Usa **Service Objects** (`app/services/`) para lógica de negocio compleja
+- Usa **Serializers** (`app/serializers/`) con Active Model Serializers para formatear respuestas JSON
+- Mantén los controladores delgados: solo orquestación, lógica en servicios
+
+### Convenciones de Código
+- Sigue las convenciones de estilo Ruby (PEP 8 equivalente para Ruby)
+- Usa `snake_case` para métodos y variables
+- Usa `PascalCase` para clases y módulos
+- Indentación: 2 espacios
+- Máximo 80 caracteres por línea cuando sea posible
+
+### Controladores
+```ruby
+# Estructura estándar de controlador
+class Api::V1::RecursosController < ApplicationController
+  before_action :authenticate_usuario!, only: [:create, :update, :destroy]
+  before_action :set_recurso, only: [:show, :update, :destroy]
+  before_action :require_ownership!, only: [:update, :destroy]
+
+  def index
+    @recursos = Recurso.includes(:asociaciones).all
+    render json: @recursos
+  end
+
+  def create
+    @recurso = Recurso.new(recurso_params)
+    if @recurso.save
+      NotificationService.notify_creado(@recurso) if necesario
+      render json: @recurso, status: :created
+    else
+      render json: @recurso.errors, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def recurso_params
+    params.require(:recurso).permit(:campo1, :campo2)
+  end
+
+  def set_recurso
+    @recurso = Recurso.find_by(id: params[:id])
+  end
+end
+```
+
+### Modelos
+- Usa validaciones de Active Record apropiadas
+- Define relaciones (`has_many`, `has_one`, `belongs_to`) con `dependent: :destroy` cuando corresponda
+- Usa `accepts_nested_attributes_for` para formularios anidados
+- Incluye validaciones de presencia, unicidad y formato cuando sea necesario
+- Usa scopes para consultas reutilizables
+
+### Servicios
+- Los servicios deben ser clases con métodos de clase (`self.method`)
+- Manejan lógica de negocio compleja y comunicación entre sistemas (ej: WebSocket)
+- Deben ser testeables y no depender de estado global
+- Usa logging apropiado (`Rails.logger.info/error`)
+
+### Serializers
+- Usa Active Model Serializers para formatear respuestas
+- Incluye asociaciones necesarias con `include`
+- Evita incluir datos sensibles innecesarios
+
+### Autenticación y Autorización
+- Usa `before_action :authenticate_usuario!` para rutas protegidas
+- Implementa autorización basada en roles (`require_arquitecto!`, `require_cliente!`, etc.)
+- Verifica ownership antes de permitir actualizaciones/eliminaciones
+- Usa JWT con Devise para autenticación stateless
+
+### Rutas
+- Sigue convenciones RESTful
+- Agrupa bajo `api/v1` para versionado
+- Usa `resources` para recursos estándar
+
+### Testing
+- Usa Minitest (framework por defecto de Rails)
+- Prueba controladores, modelos y servicios
+- Usa fixtures para datos de prueba
+
+---
+
+##  GRAPHQL BACKEND (Python)
+
+### Estructura y Organización
+- Usa FastAPI como framework web
+- Usa Strawberry GraphQL para el schema
+- Organiza resolvers en módulos (`queries/agregacion/`, `queries/metricas/`, `queries/busqueda/`)
+- Separa tipos GraphQL en `graphql_types/`
+- Usa adapters para comunicación con API REST (`adapters/`)
+
+### Convenciones de Código
+- Sigue PEP 8 estrictamente
+- Usa `snake_case` para funciones y variables
+- Usa `PascalCase` para clases
+- Indentación: 4 espacios
+- Máximo 79 caracteres por línea (PEP 8)
+
+### Type Hints
+- **Siempre** usa type hints en todas las funciones
+- Usa tipos de `typing` (`Optional`, `List`, `Dict`, etc.)
+- Usa tipos de Strawberry para campos GraphQL
+
+### Resolvers
+```python
+from typing import Optional
+import strawberry
+from graphql_types.tipo import Tipo
+from adapters.rest_client import RestClient
+
+async def resolver_tipo(id: str) -> Optional[Tipo]:
+    """
+    Resolver para obtener un tipo específico.
+    
+    Args:
+        id: Identificador del tipo
+        
+    Returns:
+        Tipo si existe, None en caso contrario
+    """
+    try:
+        client = RestClient()
+        data = await client.get(f"/api/v1/tipos/{id}")
+        return Tipo.from_dict(data) if data else None
+    except Exception as e:
+        logger.error(f"Error obteniendo tipo {id}: {e}")
+        return None
+```
+
+### Async/Await
+- Usa `async/await` para todas las operaciones I/O
+- Usa `httpx` para llamadas HTTP asíncronas
+- No bloquees el event loop
+
+### Manejo de Errores
+- Captura excepciones específicas
+- Usa logging apropiado (`loguru`)
+- Retorna `None` o valores por defecto en lugar de lanzar excepciones en resolvers
+- Usa códigos de error HTTP apropiados en extensiones GraphQL
+
+### Testing
+- Usa pytest con pytest-asyncio
+- Prueba resolvers de forma aislada
+- Mockea llamadas HTTP al API REST
+
+---
+
+## 🔌 WEBSOCKET BACKEND (NestJS/TypeScript)
+
+### Estructura y Organización
+- Sigue la arquitectura modular de NestJS
+- Cada feature tiene su módulo (`chat/`, `notificacion/`, `mensaje/`, etc.)
+- Cada módulo contiene: `*.module.ts`, `*.service.ts`, `*.gateway.ts`, `*.controller.ts`
+- Usa Dependency Injection de NestJS
+
+### Convenciones de Código
+- Sigue las convenciones de TypeScript estrictas
+- Usa `camelCase` para métodos y variables
+- Usa `PascalCase` para clases e interfaces
+- Indentación: 2 espacios
+- Máximo 100 caracteres por línea
+
+### TypeScript
+- **Siempre** usa tipos explícitos para todas las variables y argumentos de función
+- No uses `any` - usa `unknown` si el tipo es realmente desconocido
+- Define interfaces/DTOs para estructuras de datos
+- Usa `strict: true` en tsconfig
+
+### Servicios
+```typescript
+import { Injectable, Logger } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
+
+@Injectable()
+export class RecursoService {
+  private readonly logger = new Logger(RecursoService.name);
+  
+  constructor(private readonly http: HttpService) {}
+
+  async crearRecurso(dto: CrearRecursoDto, authorization?: string): Promise<Recurso> {
+    const apiUrl = process.env.APIREST_URL || 'http://localhost:3000';
+    const url = `${apiUrl}/api/v1/recursos`;
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    
+    if (authorization) {
+      headers['Authorization'] = authorization.startsWith('Bearer ') 
+        ? authorization 
+        : `Bearer ${authorization}`;
+    }
+
+    try {
+      const resp$ = this.http.post(url, { recurso: dto }, { headers });
+      const resp = await lastValueFrom(resp$);
+      this.logger.log(`[SUCCESS] Recurso creado: ${resp.data.id}`);
+      return resp.data;
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
+      this.logger.error(`[ERROR] Error creando recurso: ${errorMessage}`);
+      throw err;
+    }
+  }
+}
+```
+
+### Gateways (WebSocket)
+- Usa decoradores de `@nestjs/websockets` y `@nestjs/platform-socket.io`
+- Implementa autenticación en conexiones WebSocket
+- Usa rooms para agrupar clientes
+- Emite eventos con nombres descriptivos
+
+### DTOs y Validación
+- Define DTOs para todas las entradas
+- Usa class-validator cuando sea necesario
+- Valida datos antes de procesarlos
+
+### Logging
+- Usa el Logger de NestJS (`private readonly logger = new Logger(ClassName.name)`)
+- NO uses emojis en mensajes de log - usa prefijos de texto descriptivos (ej: "[SUCCESS]", "[ERROR]", "[INFO]")
+- Incluye contexto suficiente en logs (IDs, usuarios, acciones)
+
+### Testing
+- Usa Jest para testing
+- Prueba servicios, gateways y controladores
+- Mockea dependencias externas (HTTP calls)
+
+---
+
+## ⚛️ FRONTEND (React + TypeScript)
+
+### Estructura y Organización
+- Organiza por features: `pages/`, `components/`, `hooks/`, `services/`, `types/`
+- Usa componentes funcionales con hooks
+- Separa lógica de presentación (custom hooks para lógica, componentes para UI)
+
+### Convenciones de Código
+- Sigue las convenciones de React y TypeScript
+- Usa `PascalCase` para componentes
+- Usa `camelCase` para funciones, variables y hooks
+- Indentación: 2 espacios
+- Máximo 100 caracteres por línea
+
+### TypeScript
+- **Siempre** usa tipos explícitos
+- Define interfaces/types en `types/` para entidades del dominio
+- No uses `any`
+- Usa tipos de React apropiados (`React.FC`, `React.ReactNode`, etc.)
+
+### Componentes
+```typescript
+import { useState, useEffect } from 'react';
+import { Recurso } from '../types/recurso';
+import { recursoService } from '../services/recursoService';
+
+interface RecursoListProps {
+  filtro?: string;
+  onRecursoSelect?: (recurso: Recurso) => void;
+}
+
+/**
+ * Componente para mostrar una lista de recursos.
+ * 
+ * @param filtro - Filtro opcional para recursos
+ * @param onRecursoSelect - Callback cuando se selecciona un recurso
+ */
+export function RecursoList({ filtro, onRecursoSelect }: RecursoListProps) {
+  const [recursos, setRecursos] = useState<Recurso[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const cargarRecursos = async () => {
+      try {
+        setLoading(true);
+        const data = await recursoService.obtenerTodos(filtro);
+        setRecursos(data);
+      } catch (err) {
+        setError('Error al cargar recursos');
+        // El error se maneja a través del estado, no se usa console.error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarRecursos();
+  }, [filtro]);
+
+  if (loading) return <div>Cargando...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  return (
+    <ul>
+      {recursos.map(recurso => (
+        <li key={recurso.id} onClick={() => onRecursoSelect?.(recurso)}>
+          {recurso.nombre}
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### Custom Hooks
+- Extrae lógica reutilizable a custom hooks
+- Nombra hooks con prefijo `use` (`useAuth`, `useRecursos`, etc.)
+- Retorna objetos con propiedades descriptivas
+- Maneja estados de loading y error
+
+### Context API
+- Usa Context para estado global (ej: autenticación)
+- Proporciona hooks personalizados para acceder al contexto
+- Valida que el hook se use dentro del Provider
+
+### Routing
+- Usa React Router v7
+- Implementa rutas protegidas con `ProtectedRoute`
+- Agrupa rutas por rol cuando sea necesario
+
+### Servicios
+- Separa llamadas API en servicios (`services/`)
+- Usa Axios o fetch para HTTP
+- Usa Apollo Client para GraphQL
+- Maneja errores apropiadamente
+
+### WebSocket
+- Usa servicios dedicados para WebSocket (`services/websocket/`)
+- Implementa reconexión automática
+- Maneja eventos con tipos apropiados
+
+### Manejo de Estado
+- Usa `useState` para estado local
+- Usa Context para estado global compartido
+- Considera React Query o SWR para estado de servidor si es necesario
+
+### Testing
+- Usa React Testing Library
+- Prueba comportamiento, no implementación
+- Mockea servicios y APIs externas
+
+---
+
+## 🔒 SEGURIDAD
+
+### General
+- Nunca expongas credenciales o tokens en código
+- Usa variables de entorno para configuración sensible
+- Valida y sanitiza todas las entradas del usuario
+- Implementa rate limiting donde sea apropiado
+
+### Autenticación
+- Usa JWT para autenticación stateless
+- Valida tokens en cada request protegido
+- Implementa refresh tokens cuando sea necesario
+- Revoca tokens apropiadamente
+
+### Autorización
+- Verifica permisos en cada acción sensible
+- Implementa autorización basada en roles
+- Verifica ownership antes de modificar recursos
+- Usa Row Level Security (RLS) en Supabase cuando sea posible
+
+### CORS
+- Configura CORS apropiadamente en todos los servicios
+- Solo permite orígenes necesarios
+- No uses `allow_origins: ["*"]` en producción
+
+---
+
+## 🚀 PERFORMANCE
+
+### Backend
+- Usa `includes` en Rails para evitar N+1 queries
+- Implementa paginación para listas grandes
+- Usa índices de base de datos apropiados
+- Cachea respuestas cuando sea apropiado
+
+### Frontend
+- Usa lazy loading para componentes y rutas
+- Implementa paginación/infinite scroll para listas grandes
+- Optimiza imágenes y assets
+- Usa React.memo para componentes pesados cuando sea apropiado
+
+### GraphQL
+- Implementa DataLoader para evitar N+1 queries
+- Limita profundidad de queries
+- Usa paginación (cursor-based cuando sea posible)
+
+---
+
+## 📝 PATRONES DE DISEÑO
+
+### Service Layer (Rails)
+- Usa Service Objects para lógica de negocio compleja
+- Mantén controladores delgados
+
+### Repository Pattern (Python)
+- Usa adapters para abstraer acceso a datos externos
+- Facilita testing y cambio de implementación
+
+### Dependency Injection (NestJS)
+- Usa DI de NestJS para todas las dependencias
+- Facilita testing y mantenibilidad
+
+### Custom Hooks (React)
+- Extrae lógica reutilizable a hooks
+- Facilita testing y reutilización
+
+### Error Boundaries (React)
+- Implementa Error Boundaries para capturar errores de renderizado
+- Proporciona fallbacks apropiados
+
+---
+
+## 🧪 TESTING
+
+### Cobertura
+- Apunta a >80% de cobertura de código
+- Prueba casos felices y casos de error
+- Prueba edge cases
+
+### Naming
+- Usa nombres descriptivos para tests
+- Sigue convención: `describe('Clase', () => { it('debería hacer X cuando Y', () => {}) })`
+
+### Aislamiento
+- Cada test debe ser independiente
+- Mockea dependencias externas
+- Limpia estado entre tests
+
+---
+
+## 📦 DEPENDENCIAS
+
+### Gestión
+- Mantén dependencias actualizadas
+- Revisa vulnerabilidades regularmente
+- Usa versiones específicas en producción
+
+### Documentación
+- Documenta dependencias críticas
+- Explica por qué se usa cada dependencia importante
+
+---
+
+## 🔄 GIT Y VERSIONADO
+
+### Commits
+- Usa mensajes de commit descriptivos
+- Sigue convención: `tipo(scope): descripción`
+- Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+
+### Branches
+- Usa branches descriptivos
+- Mantén `main` estable
+- Usa feature branches para desarrollo
+
+---
+
+## 🎨 ESTILO Y FORMATO
+
+### Código
+- Mantén funciones pequeñas y enfocadas (< 50 líneas idealmente)
+- Usa nombres descriptivos
+- Evita código duplicado (DRY)
+- Refactoriza cuando sea necesario
+
+### Comentarios
+- Comenta el "por qué", no el "qué"
+- Mantén comentarios actualizados
+- Elimina comentarios obsoletos
+
+---
+
+## ⚠️ REGLAS ESPECÍFICAS DEL PROYECTO
+
+### Base de Datos
+- Usa Supabase como base de datos principal
+- Todas las tablas están en el esquema `public`
+- RLS está deshabilitado actualmente - considera habilitarlo
+
+### Comunicación entre Servicios
+- API REST (Rails) es la fuente de verdad para datos
+- GraphQL consume API REST para obtener datos
+- WebSocket (NestJS) consume API REST para operaciones CRUD
+- Frontend consume todos los servicios según necesidad
+
+### Logging
+- Usa logging estructurado
+- Incluye contexto suficiente (IDs, usuarios, acciones)
+- Usa niveles apropiados (info, warn, error)
+
+### Variables de Entorno
+- Usa `.env` para desarrollo local
+- Documenta todas las variables requeridas
+- Nunca commitees `.env` con valores reales
+
+---
+
+## ✅ CHECKLIST ANTES DE COMMIT
+
+- [ ] Código compila sin errores
+- [ ] Tests pasan
+- [ ] No hay console.logs o código de debug
+- [ ] Manejo de errores implementado
+- [ ] Documentación actualizada si es necesario
+- [ ] Tipos TypeScript correctos (sin `any`)
+- [ ] Validaciones implementadas
+- [ ] Logging apropiado
+- [ ] Código sigue convenciones del proyecto
+
+---
+
+## 📚 RECURSOS Y REFERENCIAS
+
+- Rails Guides: https://guides.rubyonrails.org/
+- NestJS Docs: https://docs.nestjs.com/
+- React Docs: https://react.dev/
+- FastAPI Docs: https://fastapi.tiangolo.com/
+- Strawberry GraphQL: https://strawberry.rocks/
+- TypeScript Handbook: https://www.typescriptlang.org/docs/
+
+---
+
+**Nota**: Estas reglas deben seguirse consistentemente en todo el proyecto. Si encuentras una situación donde una regla no aplica, documenta la excepción y el razonamiento.
+
