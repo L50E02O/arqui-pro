@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  contenido: MyText
+  fecha_envio: 2025-10-17
+  leido: false
+  conversacion: one
+  remitente: one
+
+two:
+  contenido: MyText
+  fecha_envio: 2025-10-17
+  leido: false
+  conversacion: two
+  remitente: two

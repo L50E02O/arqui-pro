@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cedula: MyString
+  valoracion_prom_proyecto: 1.5
+  descripcion: MyText
+  especialidades: MyString
+  ubicacion: MyString
+  verificado: false
+  vistas_perfil: 1
+  usuario: one
+
+two:
+  cedula: MyString
+  valoracion_prom_proyecto: 1.5
+  descripcion: MyText
+  especialidades: MyString
+  ubicacion: MyString
+  verificado: false
+  vistas_perfil: 1
+  usuario: two

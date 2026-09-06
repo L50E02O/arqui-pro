@@ -1,0 +1,5 @@
+class AddDefaultsToIncidencias < ActiveRecord::Migration[8.0]
+  def change
+    change_column_default :incidencias, :estado, "pendiente"
+  end
+end

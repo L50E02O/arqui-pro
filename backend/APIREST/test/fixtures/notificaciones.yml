@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  mensaje: MyText
+  fecha: 2025-10-12
+  leido: false
+  usuario: one
+
+two:
+  mensaje: MyText
+  fecha: 2025-10-12
+  leido: false
+  usuario: two

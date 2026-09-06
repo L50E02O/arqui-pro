@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  estado: MyString
+  fecha: 2025-10-15
+  arquitecto: one
+  cliente: one
+
+two:
+  estado: MyString
+  fecha: 2025-10-15
+  arquitecto: two
+  cliente: two

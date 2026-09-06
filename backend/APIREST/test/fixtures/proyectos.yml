@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  titulo_proyecto: MyText
+  valoracion_promedio: 1.5
+  descripcion: MyText
+  tipo_proyecto: MyString
+  fecha_publicacion: 2025-10-15
+  arquitecto: one
+  conversacion: one
+  cliente: one
+  solicitud_proyecto: one
+
+two:
+  titulo_proyecto: MyText
+  valoracion_promedio: 1.5
+  descripcion: MyText
+  tipo_proyecto: MyString
+  fecha_publicacion: 2025-10-15
+  arquitecto: two
+  conversacion: two
+  cliente: two
+  solicitud_proyecto: two

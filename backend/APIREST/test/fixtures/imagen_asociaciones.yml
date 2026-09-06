@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  asociable_type: MyString
+  asociable_id: MyString
+  imagen: one
+
+two:
+  asociable_type: MyString
+  asociable_id: MyString
+  imagen: two
