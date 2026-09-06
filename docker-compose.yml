@@ -1,0 +1,79 @@
+services:
+  # Base de datos PostgreSQL para desarrollo local
+  postgres:
+    image: postgres:16-alpine
+    container_name: arqui-pro-postgres
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-arqui_pro_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - arqui-pro-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Message Broker RabbitMQ para comunicacion asincrona entre microservicios
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: arqui-pro-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"     # Puerto AMQP
+      - "15672:15672"                     # Panel de administracion web
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-guest}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - arqui-pro-net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  # Motor de flujos de trabajo y automatizacion n8n
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: arqui-pro-n8n
+    restart: unless-stopped
+    ports:
+      - "${N8N_PORT:-5678}:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER:-admin}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD:-admin_password_seguro}
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=America/Mexico_City
+      - N8N_API_KEY=${N8N_API_KEY:-}
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - arqui-pro-net
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+  n8n_data:
+    driver: local
+
+networks:
+  arqui-pro-net:
+    driver: bridge
