@@ -1,0 +1,251 @@
+{
+  "name": "Limpieza Automática de Tokens Expirados",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "id": "27773063-a53b-44c4-9c02-a9d31841553c",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:4000/auth/cleanup-tokens",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "=ace791da1fb0765e56a6063803e27577afee631a5a7c716eecfe37188fa3b26e"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "1e41b28c-54bf-46ae-852f-2dedbbb538c9",
+      "name": "HTTP Request - Limpiar Tokens",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        96
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "dAm4JOW8jyv8Zmgi",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.success }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "fd5d3cf6-3aae-4076-b6bc-eecb90c6eec7",
+      "name": "Verificar Éxito",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        448,
+        96
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "1ef418de-36f1-4a8e-b9e6-2585a096be5b",
+      "name": "Preparar Log",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Formatear mensaje de log estructurado\nconst data = $input.item.json;\nconst timestamp = new Date().toISOString();\n\nlet message = `[${timestamp}] Limpieza de tokens completada\\n`;\nmessage += `Estado: ${data.success ? 'ÉXITO' : 'ERROR'}\\n`;\n\nif (data.success && data.deleted) {\n  message += `Tokens eliminados:\\n`;\n  message += `  - Tokens revocados: ${data.deleted.revoked_tokens}\\n`;\n  message += `  - Refresh tokens: ${data.deleted.refresh_tokens}\\n`;\n  message += `  - Total: ${data.deleted.total}\\n`;\n}\n\nif (data.error) {\n  message += `Error: ${data.error}\\n`;\n}\n\nreturn {\n  json: {\n    message: message,\n    data: data,\n    timestamp: timestamp\n  }\n};"
+      },
+      "id": "5ad1f6f0-789f-43e1-a079-7afd645e0e24",
+      "name": "Formatear Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "error-assignment",
+              "name": "error",
+              "value": "={{ $json.error || $json.message || 'Error desconocido' }}",
+              "type": "string"
+            },
+            {
+              "id": "timestamp-assignment",
+              "name": "timestamp",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "62fb0fa9-dca1-419d-8434-0e20a7de9ddd",
+      "name": "Manejar Error",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        672,
+        192
+      ]
+    }
+  ],
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2026-01-15T18:23:14.937-06:00",
+          "Readable date": "January 15th 2026, 6:23:14 pm",
+          "Readable time": "6:23:14 pm",
+          "Day of week": "Thursday",
+          "Year": "2026",
+          "Month": "January",
+          "Day of month": "15",
+          "Hour": "18",
+          "Minute": "23",
+          "Second": "14",
+          "Timezone": "America/Mexico_City (UTC-06:00)"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Limpiar Tokens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Limpiar Tokens": {
+      "main": [
+        [
+          {
+            "node": "Verificar Éxito",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Éxito": {
+      "main": [
+        [
+          {
+            "node": "Preparar Log",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Manejar Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Log": {
+      "main": [
+        [
+          {
+            "node": "Formatear Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manejar Error": {
+      "main": [
+        [
+          {
+            "node": "Formatear Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear Log": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "versionId": "df444055-93cc-46f5-806b-2be2d29464be",
+  "meta": {
+    "instanceId": "31c5928a25967a37f6811e5ac87cb4b9760190cf8217862fac6946d277fc8b9d"
+  },
+  "id": "JFQGumfyb5cijsCVl2lE8",
+  "tags": []
+}

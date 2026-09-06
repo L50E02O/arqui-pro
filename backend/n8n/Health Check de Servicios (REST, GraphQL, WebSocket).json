@@ -1,0 +1,350 @@
+{
+  "name": "Health Check de Servicios (REST, GraphQL, WebSocket)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "id": "1920835a-1647-4569-b669-64a0be297510",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -224,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://host.docker.internal:3000/up",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "1e9d6f8a-da86-4714-83bf-249768f935b3",
+      "name": "Health Check REST API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "continueOnFail": true,
+      "notes": "No se detiene si este servicio falla"
+    },
+    {
+      "parameters": {
+        "url": "http://host.docker.internal:8000/",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "7d64554d-00a7-4ed5-a26d-e468f90acae0",
+      "name": "Health Check GraphQL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        128
+      ],
+      "continueOnFail": true,
+      "notes": "No se detiene si este servicio falla"
+    },
+    {
+      "parameters": {
+        "url": "http://host.docker.internal:3006/",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "d84aa000-01a2-4806-9d19-d3d23425afd2",
+      "name": "Health Check WebSocket",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        240
+      ],
+      "continueOnFail": true,
+      "notes": "No se detiene si este servicio falla"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesar y formatear resultado del health check REST API\nconst items = $input.all();\nconst item = items.length > 0 ? items[0] : null;\nconst json = (item && item.json) ? item.json : {};\nconst error = (item && item.error) ? item.error : null;\nconst timestamp = new Date().toISOString();\n\nlet statusCode;\nlet hasError = false;\n\n// Verificar si hay error: si error existe Y tiene propiedades, ES ERROR\nconst errorExists = error && (typeof error === 'object' ? Object.keys(error).length > 0 : true);\nconst jsonErrorExists = json && typeof json === 'object' && 'error' in json && json.error && (typeof json.error === 'object' ? Object.keys(json.error).length > 0 : true);\n\nif (!item) {\n  statusCode = 'TIMEOUT/NO_RESPONSE';\n  hasError = true;\n} else if (errorExists) {\n  hasError = true;\n  statusCode = (error && typeof error === 'object' && 'code' in error) ? error.code : 'ERROR';\n} else if (jsonErrorExists) {\n  hasError = true;\n  statusCode = (json.error && typeof json.error === 'object' && 'code' in json.error) ? json.error.code : 'ERROR';\n} else {\n  statusCode = (json && typeof json === 'object' && 'statusCode' in json) ? json.statusCode : \n               ((json && typeof json === 'object' && 'code' in json) ? json.code : 200);\n  if (typeof statusCode === 'string') {\n    hasError = true;\n  } else if (typeof statusCode === 'number') {\n    hasError = statusCode < 200 || statusCode >= 400;\n  }\n}\n\nconst isOk = !hasError;\n\nconst estado = isOk ? 'exito' : 'error';\nconst nombreServicio = 'REST API';\nconst puerto = 3000;\nconst url = 'http://host.docker.internal:3000/up';\nconst errorMsg = (error && typeof error === 'object' && 'message' in error) ? error.message : \n                 ((json && typeof json === 'object' && 'error' in json) ? json.error : \n                 ((json && typeof json === 'object' && 'message' in json) ? json.message : \n                 (hasError ? 'Servicio no disponible o timeout' : null)));\n\n// Construir mensaje descriptivo\nlet mensaje = `[${timestamp}] Health Check ${nombreServicio}\\n`;\nmensaje += `===========================================\\n`;\nmensaje += `${isOk ? 'OK' : 'ERROR'} ${nombreServicio} (puerto ${puerto}): ${isOk ? 'OK' : 'ERROR'}\\n`;\nmensaje += `   Status: ${statusCode}\\n`;\nif (!isOk && errorMsg) {\n  mensaje += `   Error: ${errorMsg}\\n`;\n}\nmensaje += `   URL: ${url}\\n`;\nmensaje += `===========================================\\n`;\n\nreturn {\n  json: {\n    tipo: 'health-check',\n    mensaje: mensaje,\n    estado: estado,\n    fecha_ejecucion: timestamp,\n    servicio: 'rest',\n    nombre_servicio: nombreServicio,\n    puerto: puerto,\n    statusCode: statusCode,\n    error: errorMsg,\n    url: url\n  }\n};"
+      },
+      "id": "e76fb594-c4a0-4560-99e6-3155b4558beb",
+      "name": "Formatear REST",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesar y formatear resultado del health check GraphQL\nconst items = $input.all();\nconst item = items.length > 0 ? items[0] : null;\nconst json = (item && item.json) ? item.json : {};\nconst error = (item && item.error) ? item.error : null;\nconst timestamp = new Date().toISOString();\n\nlet statusCode;\nlet hasError = false;\n\n// Verificar si hay error: si error existe Y tiene propiedades, ES ERROR\nconst errorExists = error && (typeof error === 'object' ? Object.keys(error).length > 0 : true);\nconst jsonErrorExists = json && typeof json === 'object' && 'error' in json && json.error && (typeof json.error === 'object' ? Object.keys(json.error).length > 0 : true);\n\nif (!item) {\n  statusCode = 'TIMEOUT/NO_RESPONSE';\n  hasError = true;\n} else if (errorExists) {\n  hasError = true;\n  statusCode = (error && typeof error === 'object' && 'code' in error) ? error.code : 'ERROR';\n} else if (jsonErrorExists) {\n  hasError = true;\n  statusCode = (json.error && typeof json.error === 'object' && 'code' in json.error) ? json.error.code : 'ERROR';\n} else {\n  statusCode = (json && typeof json === 'object' && 'statusCode' in json) ? json.statusCode : \n               ((json && typeof json === 'object' && 'code' in json) ? json.code : 200);\n  if (typeof statusCode === 'string') {\n    hasError = true;\n  } else if (typeof statusCode === 'number') {\n    hasError = statusCode < 200 || statusCode >= 400;\n  }\n}\n\nconst isOk = !hasError;\n\nconst estado = isOk ? 'exito' : 'error';\nconst nombreServicio = 'GraphQL';\nconst puerto = 8000;\nconst url = 'http://host.docker.internal:8000/';\nconst errorMsg = (error && typeof error === 'object' && 'message' in error) ? error.message : \n                 ((json && typeof json === 'object' && 'error' in json) ? json.error : \n                 ((json && typeof json === 'object' && 'message' in json) ? json.message : \n                 (hasError ? 'Servicio no disponible o timeout' : null)));\n\n// Construir mensaje descriptivo\nlet mensaje = `[${timestamp}] Health Check ${nombreServicio}\\n`;\nmensaje += `===========================================\\n`;\nmensaje += `${isOk ? 'OK' : 'ERROR'} ${nombreServicio} (puerto ${puerto}): ${isOk ? 'OK' : 'ERROR'}\\n`;\nmensaje += `   Status: ${statusCode}\\n`;\nif (!isOk && errorMsg) {\n  mensaje += `   Error: ${errorMsg}\\n`;\n}\nmensaje += `   URL: ${url}\\n`;\nmensaje += `===========================================\\n`;\n\nreturn {\n  json: {\n    tipo: 'health-check',\n    mensaje: mensaje,\n    estado: estado,\n    fecha_ejecucion: timestamp,\n    servicio: 'graphql',\n    nombre_servicio: nombreServicio,\n    puerto: puerto,\n    statusCode: statusCode,\n    error: errorMsg,\n    url: url\n  }\n};"
+      },
+      "id": "11b223fa-a582-401e-8489-a1bce0190de0",
+      "name": "Formatear GraphQL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        128
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesar y formatear resultado del health check WebSocket\nconst items = $input.all();\nconst item = items.length > 0 ? items[0] : null;\nconst json = (item && item.json) ? item.json : {};\nconst error = (item && item.error) ? item.error : null;\nconst timestamp = new Date().toISOString();\n\nlet statusCode;\nlet hasError = false;\n\n// Verificar si hay error: si error existe Y tiene propiedades, ES ERROR\nconst errorExists = error && (typeof error === 'object' ? Object.keys(error).length > 0 : true);\nconst jsonErrorExists = json && typeof json === 'object' && 'error' in json && json.error && (typeof json.error === 'object' ? Object.keys(json.error).length > 0 : true);\n\nif (!item) {\n  statusCode = 'TIMEOUT/NO_RESPONSE';\n  hasError = true;\n} else if (errorExists) {\n  hasError = true;\n  statusCode = (error && typeof error === 'object' && 'code' in error) ? error.code : 'ERROR';\n} else if (jsonErrorExists) {\n  hasError = true;\n  statusCode = (json.error && typeof json.error === 'object' && 'code' in json.error) ? json.error.code : 'ERROR';\n} else {\n  statusCode = (json && typeof json === 'object' && 'statusCode' in json) ? json.statusCode : \n               ((json && typeof json === 'object' && 'code' in json) ? json.code : 200);\n  if (typeof statusCode === 'string') {\n    hasError = true;\n  } else if (typeof statusCode === 'number') {\n    hasError = statusCode < 200 || statusCode >= 400;\n  }\n}\n\nconst isOk = !hasError;\n\nconst estado = isOk ? 'exito' : 'error';\nconst nombreServicio = 'WebSocket';\nconst puerto = 3006;\nconst url = 'http://host.docker.internal:3006/';\nconst errorMsg = (error && typeof error === 'object' && 'message' in error) ? error.message : \n                 ((json && typeof json === 'object' && 'error' in json) ? json.error : \n                 ((json && typeof json === 'object' && 'message' in json) ? json.message : \n                 (hasError ? 'Servicio no disponible o timeout' : null)));\n\n// Construir mensaje descriptivo\nlet mensaje = `[${timestamp}] Health Check ${nombreServicio}\\n`;\nmensaje += `===========================================\\n`;\nmensaje += `${isOk ? 'OK' : 'ERROR'} ${nombreServicio} (puerto ${puerto}): ${isOk ? 'OK' : 'ERROR'}\\n`;\nmensaje += `   Status: ${statusCode}\\n`;\nif (!isOk && errorMsg) {\n  mensaje += `   Error: ${errorMsg}\\n`;\n}\nmensaje += `   URL: ${url}\\n`;\nmensaje += `===========================================\\n`;\n\nreturn {\n  json: {\n    tipo: 'health-check',\n    mensaje: mensaje,\n    estado: estado,\n    fecha_ejecucion: timestamp,\n    servicio: 'websocket',\n    nombre_servicio: nombreServicio,\n    puerto: puerto,\n    statusCode: statusCode,\n    error: errorMsg,\n    url: url\n  }\n};"
+      },
+      "id": "a6e972cb-7a33-4401-a5b7-b7c2e93b4680",
+      "name": "Formatear WebSocket",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        240
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3000/api/v1/sistema_logs",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "=ace791da1fb0765e56a6063803e27577afee631a5a7c716eecfe37188fa3b26e"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { tipo: $json.tipo, mensaje: $json.mensaje, estado: $json.estado, fecha_ejecucion: $json.fecha_ejecucion } }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "73a8f510-dad5-4da9-95e0-cb5942594289",
+      "name": "Guardar Log REST",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        0
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "fj72qhQu8pkIPJRX",
+          "name": "Header Auth account"
+        }
+      },
+      "continueOnFail": true,
+      "notes": "Guarda el log individual del servicio REST API"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3000/api/v1/sistema_logs",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "=ace791da1fb0765e56a6063803e27577afee631a5a7c716eecfe37188fa3b26e"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { tipo: $json.tipo, mensaje: $json.mensaje, estado: $json.estado, fecha_ejecucion: $json.fecha_ejecucion } }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "ea16d0d9-a05b-47f3-b718-44e7c40e53fb",
+      "name": "Guardar Log GraphQL",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        128
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "fj72qhQu8pkIPJRX",
+          "name": "Header Auth account"
+        }
+      },
+      "continueOnFail": true,
+      "notes": "Guarda el log individual del servicio GraphQL"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3000/api/v1/sistema_logs",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "=ace791da1fb0765e56a6063803e27577afee631a5a7c716eecfe37188fa3b26e"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { tipo: $json.tipo, mensaje: $json.mensaje, estado: $json.estado, fecha_ejecucion: $json.fecha_ejecucion } }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "67ad357b-dac0-4f46-89c5-43a7d532756c",
+      "name": "Guardar Log WebSocket",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        240
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "fj72qhQu8pkIPJRX",
+          "name": "Header Auth account"
+        }
+      },
+      "continueOnFail": true,
+      "notes": "Guarda el log individual del servicio WebSocket"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Health Check REST API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Health Check GraphQL",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Health Check WebSocket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear REST": {
+      "main": [
+        [
+          {
+            "node": "Guardar Log REST",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear GraphQL": {
+      "main": [
+        [
+          {
+            "node": "Guardar Log GraphQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear WebSocket": {
+      "main": [
+        [
+          {
+            "node": "Guardar Log WebSocket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Health Check GraphQL": {
+      "main": [
+        [
+          {
+            "node": "Formatear GraphQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Health Check REST API": {
+      "main": [
+        [
+          {
+            "node": "Formatear REST",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Health Check WebSocket": {
+      "main": [
+        [
+          {
+            "node": "Formatear WebSocket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "218fcdbb-163d-4db9-b894-6a8e52c0461d",
+  "meta": {
+    "instanceId": "42447e58b53ba9c3888b085ae542bbbb3a0e3f3ad8c3fcb5206f06dbb41c05e0"
+  },
+  "id": "mgR59hh5bTuJBDj4Zunms",
+  "tags": []
+}
